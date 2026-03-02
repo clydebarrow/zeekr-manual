@@ -1,0 +1,3 @@
+name = "zeekr-manual"
+pages_build_output_dir = "./site"
+compatibility_date = "2026-03-02"

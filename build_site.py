@@ -64,7 +64,7 @@ def build_sidebar(pages, current_page_id):
     html = []
     for section_name, section_pages in sections.items():
         section_slug = slugify(section_name)
-        is_active_section = any(p['id'] == current_page_id for p in section_pages)
+        is_active_section = current_page_id is not None and any(p['id'] == current_page_id for p in section_pages)
 
         html.append(f'''
     <div class="sb-section{'  sb-section--active' if is_active_section else ''}">
@@ -110,8 +110,10 @@ def build():
         shutil.rmtree(OUTPUT_DIR)
     OUTPUT_DIR.mkdir(parents=True)
 
-    (OUTPUT_DIR / 'search.html').write_text(SEARCH_TEMPLATE, encoding='utf-8')
-    (OUTPUT_DIR / 'index.html').write_text(SEARCH_TEMPLATE, encoding='utf-8')
+    search_sidebar = build_sidebar(pages, current_page_id=None)
+    search_html = SEARCH_TEMPLATE.replace('{{SIDEBAR}}', search_sidebar)
+    (OUTPUT_DIR / 'search.html').write_text(search_html, encoding='utf-8')
+    (OUTPUT_DIR / 'index.html').write_text(search_html, encoding='utf-8')
     (OUTPUT_DIR / 'style.css').write_text(STYLE_CSS, encoding='utf-8')
 
     section_counts = {}

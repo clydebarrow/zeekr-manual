@@ -80,27 +80,81 @@ body::before {
   margin-bottom: 28px;
 }
 
-.sidebar-nav-label {
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(245,244,240,0.4);
-  margin-bottom: 10px;
-  margin-top: 24px;
+.sb-nav {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0 -28px;
+  padding: 0 0 16px;
 }
 
-.sidebar-nav a {
+.sb-section {
+  border-bottom: 1px solid rgba(245,244,240,0.07);
+}
+
+.sb-section-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.35);
+  padding: 11px 28px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.sb-section-name::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid rgba(245,244,240,0.25);
+  border-bottom: 1.5px solid rgba(245,244,240,0.25);
+  transform: rotate(-45deg);
+  margin-right: 2px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.sb-section--open .sb-section-name {
+  color: rgba(245,244,240,0.65);
+}
+
+.sb-section--open .sb-section-name::after {
+  transform: rotate(45deg);
+  border-color: rgba(245,244,240,0.5);
+}
+
+.sb-pages {
+  list-style: none;
+  padding: 0 0 8px;
+  display: none;
+}
+
+.sb-section--open .sb-pages {
+  display: block;
+}
+
+.sb-pages a {
   display: block;
   font-size: 12px;
-  color: rgba(245,244,240,0.7);
+  color: rgba(245,244,240,0.5);
   text-decoration: none;
-  padding: 5px 0;
-  border-bottom: 1px solid rgba(245,244,240,0.08);
-  transition: color 0.15s;
+  padding: 4px 28px;
+  line-height: 1.5;
+  transition: color 0.12s, background 0.12s;
+  border-left: 2px solid transparent;
 }
 
-.sidebar-nav a:hover { color: var(--bg); }
-.sidebar-nav a.active { color: var(--bg); font-weight: 500; }
+.sb-pages a:hover {
+  color: rgba(245,244,240,0.9);
+  background: rgba(245,244,240,0.05);
+}
 
 .sidebar-footer {
   margin-top: auto;
@@ -308,9 +362,8 @@ mark {
     <div class="sidebar-logo">Owner's Manual</div>
     <div class="sidebar-model">Zeekr<br>7X 2025</div>
 
-    <div class="sidebar-nav-label">Sections</div>
-    <nav class="sidebar-nav" id="sidebarNav">
-      <!-- populated by JS -->
+    <nav class="sb-nav">
+{{SIDEBAR}}
     </nav>
 
     <div class="sidebar-footer">
@@ -373,13 +426,18 @@ const SECTIONS = [
 
 let activeSection = null;
 
-// Build sidebar nav
-const nav = document.getElementById('sidebarNav');
-SECTIONS.forEach(s => {
-  const a = document.createElement('a');
-  a.href = `/sections/${s.toLowerCase().replace(/[\s,\/]+/g, '-')}/`;
-  a.textContent = s;
-  nav.appendChild(a);
+// Sidebar expand/collapse
+document.querySelectorAll('.sb-section-name').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.closest('.sb-section');
+    const isOpen = section.classList.contains('sb-section--open');
+    document.querySelectorAll('.sb-section').forEach(s => {
+      s.classList.remove('sb-section--open');
+      s.querySelector('.sb-section-name').setAttribute('aria-expanded', 'false');
+    });
+    section.classList.toggle('sb-section--open', !isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+  });
 });
 
 // Build filter chips
