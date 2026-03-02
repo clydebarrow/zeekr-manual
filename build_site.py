@@ -116,6 +116,15 @@ def build():
     (OUTPUT_DIR / 'index.html').write_text(search_html, encoding='utf-8')
     (OUTPUT_DIR / 'style.css').write_text(STYLE_CSS, encoding='utf-8')
 
+    # Copy cached images into site
+    image_cache = SCRIPT_DIR / 'image_cache'
+    image_dest = OUTPUT_DIR / 'images'
+    if image_cache.is_dir():
+        if image_dest.exists():
+            shutil.rmtree(image_dest)
+        shutil.copytree(image_cache, image_dest)
+        print(f"Copied {len(list(image_dest.iterdir()))} images to {image_dest}/")
+
     section_counts = {}
     for page in pages:
         section_slug = slugify(page['section'])
