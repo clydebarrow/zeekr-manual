@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search — Zeekr 7X Owner's Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #e0ddd6;
+  --text: #1a1a1a;
+  --muted: #888880;
+  --accent: #1a1a1a;
+  --tag-bg: #1a1a1a;
+  --tag-text: #f5f4f0;
+  --highlight: #d4e8c2;
+  --section-dot: #c8c4bc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle grain texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Sidebar ──────────────────────────────────────── */
+.sidebar {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 40px 28px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.45);
+  margin-bottom: 6px;
+}
+
+.sidebar-model {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--bg);
+  margin-bottom: 28px;
+}
+
+.sidebar-nav-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.4);
+  margin-bottom: 10px;
+  margin-top: 24px;
+}
+
+.sidebar-nav a {
+  display: block;
+  font-size: 12px;
+  color: rgba(245,244,240,0.7);
+  text-decoration: none;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(245,244,240,0.08);
+  transition: color 0.15s;
+}
+
+.sidebar-nav a:hover { color: var(--bg); }
+.sidebar-nav a.active { color: var(--bg); font-weight: 500; }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 24px;
+  font-size: 10px;
+  color: rgba(245,244,240,0.3);
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+}
+
+/* ── Main content ─────────────────────────────────── */
+.main {
+  padding: 48px 56px;
+  max-width: 900px;
+}
+
+/* ── Search header ────────────────────────────────── */
+.search-header {
+  margin-bottom: 40px;
+}
+
+.page-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+/* ── Search input ─────────────────────────────────── */
+.search-wrap {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+#search-input {
+  width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px 14px 44px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
+}
+
+#search-input::placeholder { color: var(--muted); }
+
+/* ── Filter chips ─────────────────────────────────── */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.filter-chip {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.filter-chip:hover, .filter-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+/* ── Results meta ─────────────────────────────────── */
+.results-meta {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin: 28px 0 20px;
+  min-height: 18px;
+}
+
+/* ── Result card ──────────────────────────────────── */
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.result-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 20px 24px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.result-card:hover {
+  border-color: var(--accent);
+  transform: translateX(3px);
+  box-shadow: -3px 0 0 var(--accent);
+}
+
+.result-section {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.result-section::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--section-dot);
+}
+
+.result-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.result-excerpt {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* Pagefind highlights the matched words */
+.result-excerpt mark,
+mark {
+  background: var(--highlight);
+  color: var(--text);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* ── Empty / loading states ───────────────────────── */
+.state-message {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.state-message .big {
+  font-size: 44px;
+  font-weight: 300;
+  margin-bottom: 12px;
+  display: block;
+  letter-spacing: -0.02em;
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .main { padding: 32px 24px; }
+  .page-title { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">Owner's Manual</div>
+    <div class="sidebar-model">Zeekr<br>7X 2025</div>
+
+    <div class="sidebar-nav-label">Sections</div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <!-- populated by JS -->
+    </nav>
+
+    <div class="sidebar-footer">
+      Long Range RWD<br>
+      EN · Netherlands
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="search-header">
+      <div class="page-label">Full-text search</div>
+      <h1 class="page-title">Search<br>the Manual</h1>
+
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="search" id="search-input" placeholder="Try 'charging cable' or 'highway assist'…" autofocus>
+      </div>
+
+      <div class="filters" id="filterChips">
+        <!-- populated by JS from section names -->
+      </div>
+    </div>
+
+    <div class="results-meta" id="resultsMeta"></div>
+    <div id="results" class="result-list"></div>
+  </main>
+
+</div>
+
+<script src="/pagefind/pagefind.js" type="module" id="pagefindScript"></script>
+<script type="module">
+// Dynamically import pagefind after it's available
+let pagefind;
+
+async function initPagefind() {
+  try {
+    pagefind = await import('/pagefind/pagefind.js');
+    await pagefind.options({ excerptLength: 20 });
+    // Show initial state
+    showState('idle');
+  } catch (e) {
+    showState('error');
+    console.error('Pagefind not found. Run: npx pagefind --site site/', e);
+  }
+}
+
+// ── Sections (for filter chips + sidebar) ──────────────
+const SECTIONS = [
+  "About", "Safety", "Hazardous situations", "Charging",
+  "Lock and unlock", "Seating, storage, and loading", "Driving",
+  "Brake systems", "Driver display", "Driver assistance",
+  "Windows", "Center display", "Voice control", "Additional features",
+  "Zeekr app", "Climate", "Interior lights",
+  "Power outlets and wireless charger", "Wheels and tires",
+  "Technical specifications", "Maintenance", "Driver assistance quick guide"
+];
+
+let activeSection = null;
+
+// Build sidebar nav
+const nav = document.getElementById('sidebarNav');
+SECTIONS.forEach(s => {
+  const a = document.createElement('a');
+  a.href = `/sections/${s.toLowerCase().replace(/[\s,\/]+/g, '-')}/`;
+  a.textContent = s;
+  nav.appendChild(a);
+});
+
+// Build filter chips
+const filterEl = document.getElementById('filterChips');
+const allChip = document.createElement('button');
+allChip.className = 'filter-chip active';
+allChip.textContent = 'All sections';
+allChip.onclick = () => setFilter(null, allChip);
+filterEl.appendChild(allChip);
+
+SECTIONS.forEach(s => {
+  const chip = document.createElement('button');
+  chip.className = 'filter-chip';
+  chip.textContent = s;
+  chip.onclick = () => setFilter(s, chip);
+  filterEl.appendChild(chip);
+});
+
+function setFilter(section, el) {
+  activeSection = section;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  doSearch(document.getElementById('search-input').value);
+}
+
+// ── Search ──────────────────────────────────────────────
+let debounceTimer;
+
+document.getElementById('search-input').addEventListener('input', e => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => doSearch(e.target.value), 200);
+});
+
+async function doSearch(query) {
+  const resultsEl = document.getElementById('results');
+  const metaEl = document.getElementById('resultsMeta');
+
+  if (!query.trim()) {
+    showState('idle');
+    metaEl.textContent = '';
+    return;
+  }
+
+  if (!pagefind) {
+    showState('error');
+    return;
+  }
+
+  showState('loading');
+
+  const opts = {};
+  if (activeSection) {
+    opts.filters = { section: activeSection };
+  }
+
+  const search = await pagefind.debouncedSearch(query, opts);
+  if (!search) return; // debounced away
+
+  const { results } = search;
+
+  if (results.length === 0) {
+    showState('empty', query);
+    metaEl.textContent = '';
+    return;
+  }
+
+  metaEl.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+
+  // Load first 10 results
+  const data = await Promise.all(results.slice(0, 10).map(r => r.data()));
+
+  resultsEl.innerHTML = '';
+  data.forEach(r => {
+    const card = document.createElement('a');
+    card.className = 'result-card';
+    card.href = r.url;
+
+    const section = r.filters?.section?.[0] || '';
+    card.innerHTML = `
+      <div class="result-section">${section}</div>
+      <div class="result-title">${r.meta?.title || 'Untitled'}</div>
+      <div class="result-excerpt">${r.excerpt}</div>
+    `;
+    resultsEl.appendChild(card);
+  });
+}
+
+function showState(type, query = '') {
+  const resultsEl = document.getElementById('results');
+  if (type === 'idle') {
+    resultsEl.innerHTML = `
+      <div class="state-message">
+        <span class="big">↑</span>
+        Type to search across all ${Object.keys(SECTIONS).length + SECTIONS.length} manual pages
+      </div>`;
+  } else if (type === 'loading') {
+    resultsEl.innerHTML = `<div class="state-message">Searching…</div>`;
+  } else if (type === 'empty') {
+    resultsEl.innerHTML = `
+      <div class="state-message">
+        <span class="big">∅</span>
+        No results for "<strong>${query}</strong>"
+      </div>`;
+  } else if (type === 'error') {
+    resultsEl.innerHTML = `
+      <div class="state-message">
+        Search index not built yet.<br><br>
+        Run: <code>npx pagefind --site site/</code>
+      </div>`;
+  }
+}
+
+initPagefind();
+</script>
+</body>
+</html>
