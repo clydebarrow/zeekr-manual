@@ -109,12 +109,17 @@ def build():
     if OUTPUT_DIR.exists():
         shutil.rmtree(OUTPUT_DIR)
     OUTPUT_DIR.mkdir(parents=True)
+    with open(TEMPLATES_DIR / 'style.css', encoding='utf-8') as f:
+        (OUTPUT_DIR / 'style.css').write_text(f.read(), encoding='utf-8')
+    fonts_src = SCRIPT_DIR / 'fonts'
+    if fonts_src.is_dir():
+        shutil.copytree(fonts_src, OUTPUT_DIR / 'fonts')
+        print(f"Copied fonts to {OUTPUT_DIR / 'fonts'}/")
 
     search_sidebar = build_sidebar(pages, current_page_id=None)
     search_html = SEARCH_TEMPLATE.replace('{{SIDEBAR}}', search_sidebar)
     (OUTPUT_DIR / 'search.html').write_text(search_html, encoding='utf-8')
     (OUTPUT_DIR / 'index.html').write_text(search_html, encoding='utf-8')
-    (OUTPUT_DIR / 'style.css').write_text(STYLE_CSS, encoding='utf-8')
 
     # Copy cached images into site
     image_cache = SCRIPT_DIR / 'image_cache'
