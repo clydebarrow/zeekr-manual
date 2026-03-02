@@ -60,6 +60,8 @@ document.querySelectorAll('.sb-section-name').forEach(btn => {
     }
   });
 });
+const active = document.querySelector('.sb-page--active');
+if (active) active.scrollIntoView({block: 'center', behavior: 'instant'});
 </script>
 </body>
 </html>
