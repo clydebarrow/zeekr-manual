@@ -320,7 +320,6 @@ body {
 
 /* Warning / Note / Caution boxes */
 .content .warning,
-.content [class*="warning"],
 .content [data-type="warning"] {
   background: var(--warning-bg);
   border-left: 3px solid var(--warning-border);
@@ -330,7 +329,6 @@ body {
 }
 
 .content .note,
-.content [class*="note"],
 .content [data-type="note"] {
   background: var(--note-bg);
   border-left: 3px solid var(--note-border);
@@ -340,7 +338,6 @@ body {
 }
 
 .content .caution,
-.content [class*="caution"],
 .content [data-type="caution"] {
   background: var(--caution-bg);
   border-left: 3px solid var(--caution-border);
