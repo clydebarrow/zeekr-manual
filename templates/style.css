@@ -294,7 +294,11 @@ body {
 }
 
 .x-p-11-0 {
-  margin-bottom: 8px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: #000000;
 }
 
 .content p { margin-bottom: 12px; }
@@ -432,15 +436,6 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-}
-
-.x-b-1-0 {
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: 500;
-  font-size: 18px;
-  color: #000000;
-  line-height: 60px
 }
 
 /* ── Search page ──────────────────────────────────────────────────────────── */
