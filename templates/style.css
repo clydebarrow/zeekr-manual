@@ -270,30 +270,32 @@ body {
 }
 
 .x-title-10-0 {
-    margin-left: 0px;
-    margin-right: 0px;
-    text-indent: 0pt;
+    margin-left: 0;
+    margin-right: 0;
+    text-indent: 0;
     line-height: 33.6px;
     font-size: 24px;
     font-weight: 450;
     margin-top: 24px;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     color: #24292B
 }
 
 .x-title-12-0 {
-    margin-left: 0px;
-    margin-right: 0px;
-    text-indent: 0pt;
+    margin-left: 0;
+    margin-right: 0;
+    text-indent: 0;
     line-height: 42px;
     font-size: 36px;
     font-weight: 450;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 24px;
     color: #24292B
 }
 
-
+.x-p-11-0 {
+  margin-bottom: 8px;
+}
 
 .content p { margin-bottom: 12px; }
 
@@ -362,28 +364,28 @@ body {
     border-bottom: 1px solid #DDDCDA!important;
     border-top: 1px solid #A92D25!important;
     border-left: 6px solid #EB5545!important;
-    border-radius: 0px 6px 6px 0px;
+    border-radius: 0 6px 6px 0;
 }
 .x-note-4-2 .entry-in-tbody {
     border-right: 1px solid #DDDCDA!important;
     border-bottom: 1px solid #DDDCDA!important;
     border-top: 1px solid #DDDCDA!important;
     border-left: 6px solid #EB5545!important;
-    border-radius: 0px 6px 6px 0px;
+    border-radius: 0 6px 6px 0;
 }
 .x-note-4-4 .entry-in-tbody {
     border-right: 1px solid #DDDCDA!important;
     border-bottom: 1px solid #DDDCDA!important;
     border-top: 1px solid #DDDCDA!important;
     border-left: 6px solid #4a7aff!important;
-    border-radius: 0px 6px 6px 0px;
+    border-radius: 0 6px 6px 0;
 }
 .x-note-4-5 .entry-in-tbody {
     border-right: 1px solid #DDDCDA!important;
     border-bottom: 1px solid #DDDCDA!important;
     border-top: 1px solid #DDDCDA!important;
     border-left: 6px solid #ED8733!important;
-    border-radius: 0px 6px 6px 0px;
+    border-radius: 0 6px 6px 0;
 }
 
 .content img[src=""], .content img:not([src]) { display: none; }
@@ -430,6 +432,15 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+}
+
+.x-b-1-0 {
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: 500;
+  font-size: 18px;
+  color: #000000;
+  line-height: 60px
 }
 
 /* ── Search page ──────────────────────────────────────────────────────────── */
