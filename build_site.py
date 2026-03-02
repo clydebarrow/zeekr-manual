@@ -33,6 +33,8 @@ with open(TEMPLATES_DIR / 'page.html', encoding='utf-8') as f:
     PAGE_TEMPLATE = f.read()
 with open(TEMPLATES_DIR / 'search.html', encoding='utf-8') as f:
     SEARCH_TEMPLATE = f.read()
+with open(TEMPLATES_DIR / 'style.css', encoding='utf-8') as f:
+    STYLE_CSS = f.read()
 
 
 def slugify(text):
@@ -110,6 +112,7 @@ def build():
 
     (OUTPUT_DIR / 'search.html').write_text(SEARCH_TEMPLATE, encoding='utf-8')
     (OUTPUT_DIR / 'index.html').write_text(SEARCH_TEMPLATE, encoding='utf-8')
+    (OUTPUT_DIR / 'style.css').write_text(STYLE_CSS, encoding='utf-8')
 
     section_counts = {}
     for page in pages:
